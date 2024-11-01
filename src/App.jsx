@@ -1,26 +1,52 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
+import Notification from "./components/Notification/Notification";
 
 function App() {
-  const [feedback, setFeedback] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const [feedback, setFeedback] = useState(() => {
+    const savedFeedback = localStorage.getItem("feedback");
+    return savedFeedback
+      ? JSON.parse(savedFeedback)
+      : { good: 0, neutral: 0, bad: 0 };
   });
-  const [clicks, setClicks] = useState(0);
   const updateFeedback = (feedbackType) => {
-    setClicks(clicks + 1);
+    setFeedback((prevFeedback) => {
+      const updatedFeedback = {
+        ...prevFeedback,
+        [feedbackType]: prevFeedback[feedbackType] + 1,
+      };
+      localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
+      return updatedFeedback;
+    });
   };
+  const resetFeedback = () => {
+    const resetFeedback = { good: 0, neutral: 0, bad: 0 };
+    setFeedback(resetFeedback);
+    localStorage.setItem("feedback", JSON.stringify(resetFeedback));
+  };
+  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+  const positiveFeedback =
+    totalFeedback > 0 ? Math.round((feedback.good / totalFeedback) * 100) : 0;
   return (
     <>
       <Description />
-      <Options />
-      <Feedback />
+      <Options
+        updateFeedback={updateFeedback}
+        totalFeedback={totalFeedback}
+        resetFeedback={() => setFeedback({ good: 0, neutral: 0, bad: 0 })}
+      />
+      {totalFeedback > 0 ? (
+        <Feedback
+          feedback={feedback}
+          totalFeedback={totalFeedback}
+          positiveFeedback={positiveFeedback}
+        />
+      ) : (
+        <Notification message="No feedback yet" />
+      )}
     </>
   );
 }

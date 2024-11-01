@@ -1,11 +1,15 @@
 import React from "react";
 
-const Feedback = ({ good, neutral, bad }) => {
+const Feedback = ({ feedback, totalFeedback, positiveFeedback }) => {
   return (
     <div>
-      <p>Good:{good}</p>
-      <p>Neutral:{neutral}</p>
-      <p>Bad:{bad}</p>
+      <ul>
+        <li>Good:{feedback.good}</li>
+        <li>Neutral:{feedback.neutral}</li>
+        <li>Bad:{feedback.bad}</li>
+        <li>Total feedback: {totalFeedback}</li>
+        <li>Positive feedback: {positiveFeedback}%</li>
+      </ul>
     </div>
   );
 };
