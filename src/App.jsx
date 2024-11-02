@@ -21,14 +21,12 @@ function App() {
         ...prevFeedback,
         [feedbackType]: prevFeedback[feedbackType] + 1,
       };
-      window.localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
       return updatedFeedback;
     });
   };
   const resetFeedback = () => {
     const resetFeedback = { good: 0, neutral: 0, bad: 0 };
     setFeedback(resetFeedback);
-    window.localStorage.setItem("feedback", JSON.stringify(resetFeedback));
   };
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
   const positiveFeedback =
