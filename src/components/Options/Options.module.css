@@ -1,0 +1,16 @@
+.btn_container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.btn {
+  background-color: rgb(228, 224, 224);
+  box-shadow: 0 0 3px 1px #2a2a2b;
+  transition: background-color 0.25s ease, color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.btn:hover {
+  background-color: #afafb1;
+  color: #fff;
+  box-shadow: none;
+}

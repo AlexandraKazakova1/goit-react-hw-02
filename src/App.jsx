@@ -7,25 +7,28 @@ import Notification from "./components/Notification/Notification";
 
 function App() {
   const [feedback, setFeedback] = useState(() => {
-    const savedFeedback = localStorage.getItem("feedback");
+    const savedFeedback = window.localStorage.getItem("feedback");
     return savedFeedback
       ? JSON.parse(savedFeedback)
       : { good: 0, neutral: 0, bad: 0 };
   });
+  useEffect(() => {
+    window.localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
   const updateFeedback = (feedbackType) => {
     setFeedback((prevFeedback) => {
       const updatedFeedback = {
         ...prevFeedback,
         [feedbackType]: prevFeedback[feedbackType] + 1,
       };
-      localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
+      window.localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
       return updatedFeedback;
     });
   };
   const resetFeedback = () => {
     const resetFeedback = { good: 0, neutral: 0, bad: 0 };
     setFeedback(resetFeedback);
-    localStorage.setItem("feedback", JSON.stringify(resetFeedback));
+    window.localStorage.setItem("feedback", JSON.stringify(resetFeedback));
   };
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
   const positiveFeedback =
